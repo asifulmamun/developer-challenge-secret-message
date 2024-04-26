@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 
@@ -32,7 +33,9 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 
 Route::middleware('auth')->group(function () {
 
-    Route::get('/message/{user}', [UserController::class, 'getMessage']);
+    Route::get('/message/{user}', [UserController::class, 'conversation']);
+
+    Route::post('/message', [MessageController::class, 'send_msg'])->name('send_msg');
 
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

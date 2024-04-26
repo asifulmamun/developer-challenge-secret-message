@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function getMessage(User $user)
+    public function conversation(User $user)
     {
 
 
