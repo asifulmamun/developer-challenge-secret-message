@@ -10,25 +10,35 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     
-                    {{ $receiver->name }}
+                    {{ $sender->name }} Sending {{ $receiver->name }}
                     <hr>
 
                     <div class="container mx-auto px-4 py-8">
                         <div class="max-w-md mx-auto">
-                            <!-- Sender Message -->
-                            <div class="flex justify-end mb-4">
-                                <div class="bg-blue-500 text-white py-2 px-4 rounded-lg">
-                                    Hello there!
-                                </div>
-                            </div>
                             
-                            <!-- Receiver Message -->
-                            <div class="flex mb-4">
-                                <div class="bg-gray-200 text-white-800 py-2 px-4 rounded-lg">
-                                    Hi! How can I help you?
-                                </div>
-                            </div>
-                
+                            <!-- Display messages -->
+                            @foreach ($messages->sortBy('created_at') as $message)
+                                @if ($message->sender_id == $sender->id)
+                                    <!-- Sender Message -->
+                                    <div class="flex justify-end mb-4">
+                                        <div class="bg-blue-500 text-white py-2 px-4 rounded-lg">
+                                            {{ decrypt($message->message) }}
+                                            <br>
+                                            <small>{{ $message->created_at->format('d.m.Y \a\t h:i A') }}</small>
+                                        </div>
+                                    </div>
+                                @else
+                                    <!-- Receiver Message -->
+                                    <div class="flex mb-4">
+                                        <div class="bg-gray-200 text-black py-2 px-4 rounded-lg">
+                                            {{ decrypt($message->message) }}
+                                            <br>
+                                            <small>{{ $message->created_at->format('d.m.Y \a\t h:i A') }}</small>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                                    
                             <!-- Input Box and Send Button -->
                             <form action="{{ route('send_msg') }}" method="POST" enctype="multipart/form-data">
                                 @csrf

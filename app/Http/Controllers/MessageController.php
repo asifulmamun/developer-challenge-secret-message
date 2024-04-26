@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Message;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
-
-use App\Models\Message;
 
 class MessageController extends Controller
 {
@@ -32,5 +33,36 @@ class MessageController extends Controller
 
         // Optionally, you can return a response indicating success or redirect somewhere
         return response()->json(['message' => 'Message sent successfully'], 200);
+    }
+
+
+    public function conversation(User $user)
+    {
+        $sender = Auth::user();
+        $receiver = $user;
+
+
+        // Retrieve messages where the sender ID is the current user's ID
+        $sentMessages = Message::where('sender_id', $sender->id)
+        ->where('receiver_id', $receiver->id)
+        ->orWhere('receiver_id', $sender->id)
+        ->get();
+
+        // Retrieve messages where the receiver ID is the current user's ID
+        $receivedMessages = Message::where('receiver_id', $sender->id)
+                ->where('sender_id', $receiver->id)
+                ->orWhere('sender_id', $sender->id)
+                ->get();
+
+        // Combine sent and received messages
+        $messages = $sentMessages->merge($receivedMessages);
+
+
+
+        return view('message', compact(
+            'sender',
+            'receiver',
+            'messages',
+        ));
     }
 }

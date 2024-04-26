@@ -33,7 +33,7 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 
 Route::middleware('auth')->group(function () {
 
-    Route::get('/message/{user}', [UserController::class, 'conversation']);
+    Route::get('/message/{user}', [MessageController::class, 'conversation']);
 
     Route::post('/message', [MessageController::class, 'send_msg'])->name('send_msg');
 
