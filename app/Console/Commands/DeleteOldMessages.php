@@ -21,8 +21,10 @@ class DeleteOldMessages extends Command
             // Check if the message has a dlt_time set
             if (!is_null($message->dlt_time)) {
                 // Calculate the delete duration based on the dlt_time of the message
-                $deleteDuration = Carbon::parse($message->dlt_time); // parse means second
-                
+                // $deleteDuration = Carbon::parse($message->dlt_time); // parse means second
+                $deleteDuration = Carbon::parse($message->seen_time)->addSeconds($message->dlt_time);
+
+
                 // Check if the delete duration has passed
                 if (Carbon::now()->gte($deleteDuration)) {
                     // Delete the message

@@ -83,9 +83,15 @@
                             <!-- Input Box and Send Button -->
                             <form action="{{ route('send_msg') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
+                                <label for="dlt_time">Delete message within</label>
+                                <select class="text-gray-500" name="dlt_time" id="dlt_time">
+                                    <option value="">None</option>
+                                    <option value="10">10 sec</option>
+                                    <option value="30">30 sec</option>
+                                    <option value="60">1 min</option>
+                                </select>
                                 <div class="flex items-center mt-4">
                                     <input type="hidden" name="receiver_id" value="{{ $receiver->id }}">
-
                                     <input id="message-input" type="text" name="msg" class="flex-1 border text-gray-800 border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:border-blue-500" placeholder="Type your message...">
                                     <button type="submit" id="send-btn" class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md">Send</button>
                                 </div>
