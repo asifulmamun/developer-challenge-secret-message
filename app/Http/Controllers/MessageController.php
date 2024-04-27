@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Message;
-use Illuminate\Http\Request;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 
@@ -71,4 +72,43 @@ class MessageController extends Controller
             'messages',
         ));
     }
+
+
+
+    public function msg_seen(Request $request){
+
+        // Validate the request
+        $request->validate([
+            'message_id' => 'required|exists:messages,id'
+        ]);
+
+        // Get the authenticated user's ID
+        $userId = auth()->id();
+
+        // Find the message
+        $message = Message::where('id', $request->message_id)
+                        ->where('seen_status', '!=', 1) // Add condition for seen_status
+                        ->where('receiver_id', $userId)
+                        ->first();
+
+        // If the message is found and it belongs to the authenticated user
+        if ($message) {
+            // Update the seen_status to 1 and set the seen_time to current time
+            $message->seen_status = 1;
+            $message->seen_time = Carbon::now();
+            $message->save();
+
+            return response()->json([
+                'msg' => 'Message Seen',
+                'msg_id' => $request->message_id,
+                'seen_status' => '1'
+            ], 200);
+        } /* else{
+            return response()->json(['error' => 'Message not found or unauthorized'], 404);
+
+        } */
+
+
+    }
+
 }

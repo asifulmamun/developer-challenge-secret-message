@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/message/{user}', [MessageController::class, 'conversation']);
 
     Route::post('/message', [MessageController::class, 'send_msg'])->name('send_msg');
+    Route::post('/msg-seen', [MessageController::class, 'msg_seen'])->name('msg_seen');
 
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

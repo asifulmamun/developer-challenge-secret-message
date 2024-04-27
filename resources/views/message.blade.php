@@ -1,3 +1,6 @@
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -27,6 +30,12 @@
                                             {{ decrypt($message->message) }}
                                             <br>
                                             <small>{{ $message->created_at->format('d.m.Y \a\t h:i A') }}</small>
+                                            <br>
+                                            <small class="text-sm" id="msg_{{ $message->id }}">
+                                                {{-- @if($message->seen_time)
+                                                seen {{ $message->seen_time->format('d.m.Y \a\t h:i A') }}
+                                                @endif --}}
+                                            </small>
                                         </div>
                                     </div>
                                 @else
@@ -36,9 +45,39 @@
                                             {{ decrypt($message->message) }}
                                             <br>
                                             <small>{{ $message->created_at->format('d.m.Y \a\t h:i A') }}</small>
+                                            <br><small class="text-sm" id="msg_{{ $message->id }}">
+                                                {{-- seen {{ $message->seen_time }} --}}
+                                            </small>
                                         </div>
                                     </div>
                                 @endif
+
+
+                                <script>
+                                    $(document).ready(function() {
+                                        @if ($message->sender_id != $sender->id)
+                                            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+                                            $.ajax({
+                                                url: '/msg-seen',
+                                                type: 'POST',
+                                                headers: {
+                                                    'X-CSRF-TOKEN': csrfToken
+                                                },
+                                                data: {
+                                                    message_id: {{ $message->id }},
+                                                },
+                                                success: function(response) {
+                                                    // console.log(response.msg_id);
+                                                    $('#msg_'+response.msg_id).text('seen');
+                                                },
+                                                error: function(xhr, status, error) {
+                                                    console.log(error);
+                                                }
+                                            });
+                                        @endif
+                                    });
+                                </script>
                             @endforeach
                                     
                             <!-- Input Box and Send Button -->
