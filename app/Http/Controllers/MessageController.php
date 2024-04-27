@@ -34,7 +34,8 @@ class MessageController extends Controller
         $message->save();
 
         // Optionally, you can return a response indicating success or redirect somewhere
-        return response()->json(['message' => 'Message sent successfully'], 200);
+        // return response()->json(['message' => 'Message sent successfully'], 200);
+        return back()->with('success', 'Message sended');
     }
 
 

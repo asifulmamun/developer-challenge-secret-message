@@ -60,3 +60,8 @@
 </x-app-layout>
 
 
+<div class="text-red-500">
+    @if(session('success'))
+        {{ session('success') }}
+    @endif
+</div>
