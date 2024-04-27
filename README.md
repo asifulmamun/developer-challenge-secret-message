@@ -15,3 +15,8 @@
 - Run the application ```php artisan serve```
 - Run the ```php artisan schedule:run``` in another terminal
 
+
+### Use
+- Register by any email without verification
+- Login with 2 accounts and start message
+
