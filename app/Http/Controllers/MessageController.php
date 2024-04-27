@@ -30,6 +30,7 @@ class MessageController extends Controller
         $message->sender_id = Auth::id(); // Set sender_id to the currently authenticated user's id
         $message->receiver_id = $validatedData['receiver_id'];
         $message->message = $encryptedMessage;
+        $message->dlt_time = 30;
 
         // Save the message to the database
         $message->save();
