@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Crypt;
 
 class MessageController extends Controller
 {
+
+
     public function send_msg(Request $request){
 
         // Validate the incoming request data
@@ -36,28 +38,31 @@ class MessageController extends Controller
     }
 
 
+
+
+
+
     public function conversation(User $user)
     {
+
         $sender = Auth::user();
         $receiver = $user;
 
 
         // Retrieve messages where the sender ID is the current user's ID
-        $sentMessages = Message::where('sender_id', $sender->id)
-        ->where('receiver_id', $receiver->id)
-        ->orWhere('receiver_id', $sender->id)
-        ->get();
+        $sentMessages = Message::
+            where('sender_id', $sender->id)
+            ->where('receiver_id', $receiver->id)
+            ->get();
 
         // Retrieve messages where the receiver ID is the current user's ID
-        $receivedMessages = Message::where('receiver_id', $sender->id)
-                ->where('sender_id', $receiver->id)
-                ->orWhere('sender_id', $sender->id)
-                ->get();
+        $receivedMessages = Message::
+            where('sender_id', $receiver->id)
+            ->where('receiver_id', $sender->id)
+            ->get();
 
         // Combine sent and received messages
         $messages = $sentMessages->merge($receivedMessages);
-
-
 
         return view('message', compact(
             'sender',

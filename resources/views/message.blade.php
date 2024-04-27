@@ -16,6 +16,8 @@
                     <div class="container mx-auto px-4 py-8">
                         <div class="max-w-md mx-auto">
                             
+
+
                             <!-- Display messages -->
                             @foreach ($messages->sortBy('created_at') as $message)
                                 @if ($message->sender_id == $sender->id)
