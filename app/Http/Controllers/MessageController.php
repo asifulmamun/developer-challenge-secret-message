@@ -32,6 +32,8 @@ class MessageController extends Controller
         $message->sender_id = Auth::id(); // Set sender_id to the currently authenticated user's id
         $message->receiver_id = $validatedData['receiver_id'];
         if($request->dlt_time != ""){
+            $message->dlt_time = $request->dlt_time;
+        }else{
             $message->dlt_time = NULL;
         }
         $message->message = $encryptedMessage;

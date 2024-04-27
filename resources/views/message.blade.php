@@ -28,13 +28,17 @@
                                     <div class="flex justify-end mb-4">
                                         <div class="bg-blue-500 text-white py-2 px-4 rounded-lg">
                                             {{ decrypt($message->message) }}
-                                            <br>
-                                            <small>{{ $message->created_at->format('d.m.Y \a\t h:i A') }}</small>
-                                            <br>
-                                            <small class="text-sm" id="msg_{{ $message->id }}">
-                                                {{-- @if($message->seen_time)
-                                                seen {{ $message->seen_time->format('d.m.Y \a\t h:i A') }}
-                                                @endif --}}
+                                            <div class="w-full border-b border-gray-800"></div>
+                                            <small class="text-xs">{{ $message->created_at->format('d.m.Y \a\t h:i A') }}</small>
+                                            <small class="text-xs" id="msg_{{ $message->id }}">
+                                                @if ($message->seen_time)
+                                                <br>
+                                                {{ 'seen ' . $message->seen_time ?? '' }}
+                                                @endif
+                                                @if ($message->dlt_time)
+                                                <br>
+                                                {{ 'Delete within ' . $message->dlt_time . ' sec, after seen time' ?? '' }}
+                                                @endif
                                             </small>
                                         </div>
                                     </div>
@@ -43,10 +47,17 @@
                                     <div class="flex mb-4">
                                         <div class="bg-gray-200 text-black py-2 px-4 rounded-lg">
                                             {{ decrypt($message->message) }}
-                                            <br>
-                                            <small>{{ $message->created_at->format('d.m.Y \a\t h:i A') }}</small>
-                                            <br><small class="text-sm" id="msg_{{ $message->id }}">
-                                                {{-- seen {{ $message->seen_time }} --}}
+                                            <div class="w-full border-b border-gray-800"></div>
+                                            <small class="text-xs">{{ $message->created_at->format('d.m.Y \a\t h:i A') }}</small>
+                                            <small class="text-xs" id="msg_{{ $message->id }}">
+                                                @if ($message->seen_time)
+                                                <br>
+                                                {{ 'seen ' . $message->seen_time ?? '' }}
+                                                @endif
+                                                @if ($message->dlt_time)
+                                                <br>
+                                                {{ 'Delete within ' . $message->dlt_time . ' sec, after seen time' ?? '' }}
+                                                @endif
                                             </small>
                                         </div>
                                     </div>
